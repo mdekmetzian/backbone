@@ -61,6 +61,11 @@
   // form param named `model`.
   Backbone.emulateJSON = false;
 
+
+  // Set ``characterSet`` to an explicit value if supporting older browsers (IE8-)
+  // will append ``;charset=Backbone.charset`` if not set to false 
+  Backbone.characterSet = typeof document === 'object' ? document.characterSet || false : false;
+
   // Backbone.Events
   // ---------------
 
@@ -1384,7 +1389,8 @@
     // Default options, unless specified.
     _.defaults(options || (options = {}), {
       emulateHTTP: Backbone.emulateHTTP,
-      emulateJSON: Backbone.emulateJSON
+      emulateJSON: Backbone.emulateJSON,
+      characterSet: Backbone.characterSet
     });
 
     // Default JSON-request options.
@@ -1397,13 +1403,13 @@
 
     // Ensure that we have the appropriate request data.
     if (options.data == null && model && (method === 'create' || method === 'update' || method === 'patch')) {
-      params.contentType = 'application/json';
+      params.contentType = 'application/json' + (options.characterSet ? ';charset=' + options.characterSet : '');
       params.data = JSON.stringify(options.attrs || model.toJSON(options));
     }
 
     // For older servers, emulate JSON by encoding the request into an HTML-form.
     if (options.emulateJSON) {
-      params.contentType = 'application/x-www-form-urlencoded';
+      params.contentType = 'application/x-www-form-urlencoded' + (options.characterSet ? ';charset=' + options.characterSet : '');
       params.data = params.data ? {model: params.data} : {};
     }
 

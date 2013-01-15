@@ -17,6 +17,7 @@ $(document).ready(function() {
       Environment.prototype.setup.apply(this, arguments);
       library = new Library;
       library.create(attrs, {wait: false});
+      Backbone.characterSet = 'UTF-8'
     },
 
     teardown: function() {
@@ -84,7 +85,7 @@ $(document).ready(function() {
     });
     equal(this.ajaxSettings.url, '/library/2-the-tempest');
     equal(this.ajaxSettings.type, 'POST');
-    equal(this.ajaxSettings.contentType, 'application/json');
+    equal(this.ajaxSettings.contentType, 'application/json;charset=UTF-8');
     var data = JSON.parse(this.ajaxSettings.data);
     equal(data.id, '2-the-tempest');
     equal(data.author, 'Tim Shakespeare');
@@ -97,7 +98,7 @@ $(document).ready(function() {
     });
     equal(this.ajaxSettings.url, '/library/2-the-tempest');
     equal(this.ajaxSettings.type, 'PUT');
-    equal(this.ajaxSettings.contentType, 'application/x-www-form-urlencoded');
+    equal(this.ajaxSettings.contentType, 'application/x-www-form-urlencoded;charset=UTF-8');
     var data = JSON.parse(this.ajaxSettings.data.model);
     equal(data.id, '2-the-tempest');
     equal(data.author, 'Tim Shakespeare');
